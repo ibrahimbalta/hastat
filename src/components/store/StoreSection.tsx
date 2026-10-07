@@ -34,7 +34,7 @@ export const StoreSection: React.FC = () => {
             <div className="lg:col-span-6 relative">
               <div className="rounded-2xl overflow-hidden shadow-md border border-[#e8e2d5] bg-[#FDFBF7] group">
                 <img
-                  src="/store-photo.png"
+                  src="./store-photo.png"
                   alt={`${storeInfo.title} Google İşletme Kartı`}
                   className="w-full h-auto max-h-96 object-contain mx-auto"
                 />

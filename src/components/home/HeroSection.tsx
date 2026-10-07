@@ -90,7 +90,7 @@ export const HeroSection: React.FC = () => {
                   alt={`${storeInfo.name} Taze Çerezler ve Şifalı Bitkiler`}
                   className="w-full h-80 sm:h-96 object-cover rounded-2xl brightness-100 contrast-102"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/hero-showcase.jpg';
+                    (e.target as HTMLImageElement).src = './hero-showcase.jpg';
                   }}
                 />
 

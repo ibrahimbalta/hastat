@@ -11,8 +11,8 @@ export const DEFAULT_HERO: HeroConfig = {
   titleLine2: "En Taze Kavrum Lezzetler.",
   subtitle: "HAS-TAT; Bartın'da günlük fırınlanan sıcak kuruyemişleri, asırlık şifalı bitki kürlerini, katkısız taş değirmen baharatları ve ilk soğuk pres saf yağları güvenle sofranıza getirir.",
   ctaPrimaryText: "Taze Ürünleri İncele",
-  ctaSecondaryText: "🌿 Şifa Rehberini Başlat",
-  heroImageUrl: "/hero-showcase.jpg",
+  ctaSecondaryText: "🌿 Şifa Rehberi",
+  heroImageUrl: "./hero-showcase.jpg",
   ratingBadgeText: "5.0 / 5.0 (10 Google Yorumu)",
 };
 
