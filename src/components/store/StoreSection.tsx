@@ -1,15 +1,15 @@
 import React from 'react';
-import { MapPin, Phone, Clock, Navigation, MessageCircle, Star, Sparkles } from 'lucide-react';
+import { MapPin, Phone, Clock, Navigation, MessageCircle, Star, Sparkles, CheckCircle2 } from 'lucide-react';
 import { STORE_INFO } from '../../data/storeInfo';
 import { GoogleReviews } from './GoogleReviews';
 
 export const StoreSection: React.FC = () => {
   return (
-    <section id="magaza" className="py-20 bg-[#F7F4EC] relative scroll-mt-20">
+    <section id="magaza" className="py-16 sm:py-20 bg-[#F7F4EC] relative scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1B382B]/10 text-[#1B382B] text-xs font-semibold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5 text-[#D49B44]" />
             <span>Merkez Mağazamız & İletişim</span>
@@ -17,54 +17,47 @@ export const StoreSection: React.FC = () => {
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1B382B]">
             Bartın'daki Sıcak Yuvamız
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#1A1615]/75">
+          <p className="mt-2 text-xs sm:text-base text-[#1A1615]/75">
             Sizleri taze kavrulmuş fındık kokusu ve doğal şifalı bitkilerin huzur veren atmosferinde 
             ağırlamaktan onur duyarız.
           </p>
         </div>
 
         {/* Store Detail Showcase Card */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#e8e2d5] shadow-xl mb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="bg-white rounded-3xl p-5 sm:p-8 lg:p-10 border border-[#e8e2d5] shadow-xl mb-12 sm:mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            {/* Store Photo */}
+            {/* Store Photo / Google Business Profile Card */}
             <div className="lg:col-span-6 relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-[#e8e2d5] group">
+              <div className="rounded-2xl overflow-hidden shadow-md border border-[#e8e2d5] bg-[#FDFBF7] group">
                 <img
                   src="/store-photo.png"
-                  alt="HAS-TAT Aktar ve Kuruyemiş Bartın Mağaza İçi Reyonlar"
-                  className="w-full h-80 sm:h-96 object-cover group-hover:scale-103 transition-transform duration-500"
+                  alt="HAS-TAT Aktar ve Kuruyemiş Bartın Mağazası Google İşletme Kartı"
+                  className="w-full h-auto max-h-96 object-contain mx-auto"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-6">
-                  <div className="text-white">
-                    <span className="text-xs text-[#D49B44] font-bold uppercase tracking-wider">
-                      Gerçek Mağaza Görüntüsü
-                    </span>
-                    <h3 className="font-serif text-2xl font-bold mt-0.5">
-                      HAS-TAT AKTAR & KURUYEMİŞ
-                    </h3>
-                    <p className="text-xs text-white/80">
-                      Bartın Merkez • Taze Çerez & Şifalı Bitki Reyonları
-                    </p>
-                  </div>
-                </div>
+              </div>
+              <div className="mt-3 text-center">
+                <span className="inline-flex items-center gap-1.5 text-xs text-[#1B382B] font-semibold bg-[#1B382B]/5 px-3 py-1 rounded-full border border-[#1B382B]/10">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  Google Haritalar Doğrulanmış İşletme Kartı
+                </span>
               </div>
             </div>
 
             {/* Store Contact & Location Details */}
-            <div className="lg:col-span-6 space-y-6">
+            <div className="lg:col-span-6 space-y-5">
               
-              <div className="space-y-4">
+              <div className="space-y-3.5">
                 {/* Address Box */}
                 <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-[#FDFBF7] border border-[#eee7d9]">
                   <div className="w-10 h-10 rounded-xl bg-[#1B382B] text-[#D49B44] flex items-center justify-center shrink-0">
                     <MapPin className="w-5 h-5" />
                   </div>
-                  <div>
-                    <span className="text-[11px] font-bold text-[#D49B44] uppercase tracking-wider">
+                  <div className="min-w-0">
+                    <span className="text-[11px] font-bold text-[#D49B44] uppercase tracking-wider block">
                       Mağaza Adresi
                     </span>
-                    <h4 className="text-sm font-bold text-[#1B382B]">
+                    <h4 className="text-sm font-bold text-[#1B382B] leading-snug">
                       {STORE_INFO.address}
                     </h4>
                     <p className="text-xs text-[#1A1615]/70 mt-0.5">
@@ -80,12 +73,12 @@ export const StoreSection: React.FC = () => {
                       <Phone className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider">
+                      <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider block">
                         Sipariş & Bilgi
                       </span>
                       <a 
                         href={`tel:${STORE_INFO.phone}`} 
-                        className="text-xs font-bold text-[#1B382B] hover:text-[#D49B44] block"
+                        className="text-xs font-bold text-[#1B382B] hover:text-[#D49B44] block mt-0.5 whitespace-nowrap"
                       >
                         {STORE_INFO.phoneDisplay}
                       </a>
@@ -97,10 +90,10 @@ export const StoreSection: React.FC = () => {
                       <Clock className="w-4 h-4" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider">
+                      <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider block">
                         Açılış Saatleri
                       </span>
-                      <p className="text-xs font-bold text-[#1B382B]">
+                      <p className="text-xs font-bold text-[#1B382B] mt-0.5">
                         {STORE_INFO.workingHours}
                       </p>
                     </div>
@@ -108,16 +101,16 @@ export const StoreSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              {/* Action Buttons (100% Mobile Responsive) */}
+              <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
                 <a
                   href={STORE_INFO.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-[#1B382B] hover:bg-[#142a20] text-white font-bold text-xs shadow-md transition-all active:scale-98"
+                  className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-[#1B382B] hover:bg-[#142a20] text-white font-bold text-xs shadow-md transition-all active:scale-98"
                 >
                   <Navigation className="w-4 h-4 text-[#D49B44]" />
-                  <span>Google Haritalarda Yol Tarifi Al</span>
+                  <span>Google Haritalarda Yol Tarifi</span>
                 </a>
 
                 <a
@@ -129,14 +122,13 @@ export const StoreSection: React.FC = () => {
                 </a>
 
                 <a
-                  href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent("Merhaba HAS-TAT Aktar, mağazanızın konumunu ve güncel çalışma saatlerini rica edebilir miyim?")}`}
+                  href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent("Merhaba HAS-TAT Aktar, mağazanızın tam konumunu alabilir miyim?")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-[#25D366] hover:bg-[#1ebd59] text-white font-bold text-xs shadow-md transition-all active:scale-98"
-                  title="WhatsApp Konum İste"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span className="hidden sm:inline">WhatsApp</span>
+                  <span>WhatsApp Konum</span>
                 </a>
               </div>
 

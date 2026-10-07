@@ -1,8 +1,13 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { STORE_INFO } from '../../data/storeInfo';
+import { useCart } from '../../context/CartContext';
 
 export const FloatingWhatsApp: React.FC = () => {
+  const { isCartOpen, modalProduct } = useCart();
+
+  if (isCartOpen || modalProduct) return null;
+
   const handleClick = () => {
     const text = encodeURIComponent(
       "Merhaba HAS-TAT Aktar, web sitenizden ulaşıyorum. Ürünleriniz ve sipariş hakkında bilgi almak istiyorum."

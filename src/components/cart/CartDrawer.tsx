@@ -77,7 +77,7 @@ export const CartDrawer: React.FC = () => {
       <div className="absolute inset-0" onClick={() => setIsCartOpen(false)} />
 
       {/* Drawer Container */}
-      <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
+      <div className="absolute inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
         <div className="w-screen max-w-md bg-[#FDFBF7] shadow-2xl flex flex-col justify-between border-l border-[#e8e2d5]">
           
           {/* Drawer Header */}
