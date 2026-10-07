@@ -11,8 +11,17 @@ import { CartDrawer } from './components/cart/CartDrawer';
 import { ProductModal } from './components/products/ProductModal';
 import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 import { Toast } from './components/common/Toast';
+import { AdminPanel } from './components/admin/AdminPanel';
+import { useAdminAuth } from './hooks/useAdminAuth';
 
 export const App: React.FC = () => {
+  const { isAdminRoute } = useAdminAuth();
+
+  // If URL hash is #admin or path is /admin, render the full Admin Panel
+  if (isAdminRoute) {
+    return <AdminPanel />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#FDFBF7] text-[#1A1615] font-sans antialiased selection:bg-[#D49B44] selection:text-[#1B382B]">
       {/* Top Delivery & Contact Announcement Bar */}

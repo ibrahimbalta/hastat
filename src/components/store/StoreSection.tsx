@@ -1,9 +1,12 @@
 import React from 'react';
-import { MapPin, Phone, Clock, Navigation, MessageCircle, Star, Sparkles, CheckCircle2 } from 'lucide-react';
-import { STORE_INFO } from '../../data/storeInfo';
+import { MapPin, Phone, Clock, Navigation, MessageCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useSiteData } from '../../context/SiteDataContext';
 import { GoogleReviews } from './GoogleReviews';
 
 export const StoreSection: React.FC = () => {
+  const { data } = useSiteData();
+  const { storeInfo } = data;
+
   return (
     <section id="magaza" className="py-16 sm:py-20 bg-[#F7F4EC] relative scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,7 +18,7 @@ export const StoreSection: React.FC = () => {
             <span>Merkez Mağazamız & İletişim</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1B382B]">
-            Bartın'daki Sıcak Yuvamız
+            {storeInfo.city}'daki Sıcak Yuvamız
           </h2>
           <p className="mt-2 text-xs sm:text-base text-[#1A1615]/75">
             Sizleri taze kavrulmuş fındık kokusu ve doğal şifalı bitkilerin huzur veren atmosferinde 
@@ -32,14 +35,14 @@ export const StoreSection: React.FC = () => {
               <div className="rounded-2xl overflow-hidden shadow-md border border-[#e8e2d5] bg-[#FDFBF7] group">
                 <img
                   src="/store-photo.png"
-                  alt="HAS-TAT Aktar ve Kuruyemiş Bartın Mağazası Google İşletme Kartı"
+                  alt={`${storeInfo.title} Google İşletme Kartı`}
                   className="w-full h-auto max-h-96 object-contain mx-auto"
                 />
               </div>
               <div className="mt-3 text-center">
                 <span className="inline-flex items-center gap-1.5 text-xs text-[#1B382B] font-semibold bg-[#1B382B]/5 px-3 py-1 rounded-full border border-[#1B382B]/10">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  Google Haritalar Doğrulanmış İşletme Kartı
+                  Google Haritalar Doğrulanmış İşletme Kartı ({storeInfo.googleRating} Puan)
                 </span>
               </div>
             </div>
@@ -58,10 +61,10 @@ export const StoreSection: React.FC = () => {
                       Mağaza Adresi
                     </span>
                     <h4 className="text-sm font-bold text-[#1B382B] leading-snug">
-                      {STORE_INFO.address}
+                      {storeInfo.address}
                     </h4>
                     <p className="text-xs text-[#1A1615]/70 mt-0.5">
-                      74100 {STORE_INFO.district} / {STORE_INFO.city}
+                      {storeInfo.district} / {storeInfo.city}
                     </p>
                   </div>
                 </div>
@@ -77,10 +80,10 @@ export const StoreSection: React.FC = () => {
                         Sipariş & Bilgi
                       </span>
                       <a 
-                        href={`tel:${STORE_INFO.phone}`} 
+                        href={`tel:${storeInfo.phone}`} 
                         className="text-xs font-bold text-[#1B382B] hover:text-[#D49B44] block mt-0.5 whitespace-nowrap"
                       >
-                        {STORE_INFO.phoneDisplay}
+                        {storeInfo.phoneDisplay}
                       </a>
                     </div>
                   </div>
@@ -94,17 +97,17 @@ export const StoreSection: React.FC = () => {
                         Açılış Saatleri
                       </span>
                       <p className="text-xs font-bold text-[#1B382B] mt-0.5">
-                        {STORE_INFO.workingHours}
+                        {storeInfo.workingHours}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Action Buttons (100% Mobile Responsive) */}
+              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
                 <a
-                  href={STORE_INFO.googleMapsUrl}
+                  href={storeInfo.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-[#1B382B] hover:bg-[#142a20] text-white font-bold text-xs shadow-md transition-all active:scale-98"
@@ -114,7 +117,7 @@ export const StoreSection: React.FC = () => {
                 </a>
 
                 <a
-                  href={`tel:${STORE_INFO.phone}`}
+                  href={`tel:${storeInfo.phone}`}
                   className="flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-[#D49B44] hover:bg-[#b67e2b] text-[#1B382B] font-bold text-xs shadow-md transition-all active:scale-98"
                 >
                   <Phone className="w-4 h-4" />
@@ -122,7 +125,7 @@ export const StoreSection: React.FC = () => {
                 </a>
 
                 <a
-                  href={`https://wa.me/${STORE_INFO.whatsapp}?text=${encodeURIComponent("Merhaba HAS-TAT Aktar, mağazanızın tam konumunu alabilir miyim?")}`}
+                  href={`https://wa.me/${storeInfo.whatsapp}?text=${encodeURIComponent("Merhaba HAS-TAT Aktar, mağazanızın tam konumunu alabilir miyim?")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-[#25D366] hover:bg-[#1ebd59] text-white font-bold text-xs shadow-md transition-all active:scale-98"
@@ -144,7 +147,7 @@ export const StoreSection: React.FC = () => {
               Müşteri Memnuniyeti
             </span>
             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#1B382B] mt-1">
-              Google'da 5.0 Yıldızlı Yorumlarımız
+              Google'da {storeInfo.googleRating} Yıldızlı Yorumlarımız
             </h3>
           </div>
           <GoogleReviews />

@@ -1,12 +1,14 @@
 import React from 'react';
-import { PRODUCTS } from '../../data/products';
 import { ProductCard } from './ProductCard';
 import { useCart } from '../../context/CartContext';
+import { useSiteData } from '../../context/SiteDataContext';
 import { CategoryType } from '../../types';
 import { Sparkles, SlidersHorizontal, SearchX } from 'lucide-react';
 
 export const ProductCatalog: React.FC = () => {
   const { selectedCategory, setSelectedCategory, searchQuery, setSearchQuery } = useCart();
+  const { data } = useSiteData();
+  const { products } = data;
 
   const categories: { key: CategoryType; label: string; icon: string }[] = [
     { key: 'all', label: 'Tüm Ürünler', icon: '✨' },
@@ -17,7 +19,7 @@ export const ProductCatalog: React.FC = () => {
     { key: 'balmacun', label: 'Doğal Bal & Macun', icon: '🍯' },
   ];
 
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesSearch = searchQuery === '' || 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

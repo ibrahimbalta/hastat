@@ -1,42 +1,29 @@
 import React from 'react';
 import { Flame, ShieldCheck, PackageCheck, Truck } from 'lucide-react';
+import { useSiteData } from '../../context/SiteDataContext';
 
 export const TrustBadges: React.FC = () => {
-  const badges = [
-    {
-      icon: Flame,
-      title: "Günlük Sıcak Kavrum",
-      desc: "Kuruyemişlerimiz dükkanımızda günlük fırınlanır, asla bayat ya da bekletilmiş ürün gönderilmez.",
-      highlight: "Tazelik Garantisi"
-    },
-    {
-      icon: ShieldCheck,
-      title: "%100 Katkısız & Saf Şifa",
-      desc: "Taş değirmende çekilen katkısız baharatlar, ilaçsız bitkiler ve ilk soğuk pres saf bitkisel yağlar.",
-      highlight: "Doğal & Organik"
-    },
-    {
-      icon: PackageCheck,
-      title: "Hava Almaz Kilitli Ambalaj",
-      desc: "Aromayı ve çıtırlığı ilk günkü tazeliğinde koruyan özel gıda kilitli vakumlu doypack paketleme.",
-      highlight: "Özel Koruma"
-    },
-    {
-      icon: Truck,
-      title: "Bartın İçi Hızlı & Türkiye Kargo",
-      desc: "Bartın merkezde elden kapıya hızlı teslimat, tüm Türkiye'ye aynı gün özenli ve güvenli kargo.",
-      highlight: "Hızlı Teslimat"
+  const { data } = useSiteData();
+  const { trustBadges } = data;
+
+  const getIcon = (name: string) => {
+    switch (name) {
+      case 'Flame': return Flame;
+      case 'ShieldCheck': return ShieldCheck;
+      case 'PackageCheck': return PackageCheck;
+      case 'Truck': return Truck;
+      default: return ShieldCheck;
     }
-  ];
+  };
 
   return (
     <section className="relative z-10 -mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {badges.map((b, idx) => {
-          const Icon = b.icon;
+        {trustBadges.map((b) => {
+          const Icon = getIcon(b.iconName);
           return (
             <div
-              key={idx}
+              key={b.id}
               className="bg-white rounded-2xl p-6 border border-[#e8e2d5] shadow-lg hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
             >
               <div className="flex items-center gap-3 mb-3">

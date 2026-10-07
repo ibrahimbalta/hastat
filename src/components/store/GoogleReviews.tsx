@@ -1,8 +1,11 @@
 import React from 'react';
 import { Star, CheckCircle, Quote } from 'lucide-react';
-import { GOOGLE_REVIEWS, STORE_INFO } from '../../data/storeInfo';
+import { useSiteData } from '../../context/SiteDataContext';
 
 export const GoogleReviews: React.FC = () => {
+  const { data } = useSiteData();
+  const { reviews, storeInfo } = data;
+
   return (
     <div className="space-y-6">
       {/* Header with Google Rating Badge */}
@@ -24,14 +27,14 @@ export const GoogleReviews: React.FC = () => {
                   <Star key={i} className="w-4 h-4 fill-[#D49B44] text-[#D49B44]" />
                 ))}
               </div>
-              <span className="font-extrabold text-[#1B382B] text-sm">{STORE_INFO.googleRating}.0 / 5.0</span>
-              <span className="text-gray-400 text-xs">({STORE_INFO.reviewCount} Yorum)</span>
+              <span className="font-extrabold text-[#1B382B] text-sm">{storeInfo.googleRating}.0 / 5.0</span>
+              <span className="text-gray-400 text-xs">({storeInfo.reviewCount} Yorum)</span>
             </div>
           </div>
         </div>
 
         <a
-          href={STORE_INFO.googleMapsUrl}
+          href={storeInfo.googleMapsUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs font-bold text-[#1B382B] hover:text-[#D49B44] underline decoration-[#D49B44]"
@@ -42,7 +45,7 @@ export const GoogleReviews: React.FC = () => {
 
       {/* Reviews Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {GOOGLE_REVIEWS.map((rev) => (
+        {reviews.map((rev) => (
           <div
             key={rev.id}
             className="p-5 rounded-2xl bg-white border border-[#e8e2d5] shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"

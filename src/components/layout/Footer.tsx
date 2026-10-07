@@ -1,8 +1,11 @@
 import React from 'react';
-import { Phone, MapPin, Clock, Heart, ShieldCheck, ArrowUp } from 'lucide-react';
-import { STORE_INFO } from '../../data/storeInfo';
+import { Phone, MapPin, Clock, Heart, ShieldCheck, ArrowUp, Lock } from 'lucide-react';
+import { useSiteData } from '../../context/SiteDataContext';
 
 export const Footer: React.FC = () => {
+  const { data } = useSiteData();
+  const { storeInfo } = data;
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -17,11 +20,13 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-[#1B382B] border border-[#D49B44]/40 flex items-center justify-center text-[#D49B44]">
-                <span className="font-serif text-2xl font-bold italic">H</span>
+                <span className="font-serif text-2xl font-bold italic">
+                  {storeInfo.name.charAt(0) || 'H'}
+                </span>
               </div>
               <div>
                 <span className="font-serif text-2xl font-bold tracking-wider text-white">
-                  HAS-TAT
+                  {storeInfo.name}
                 </span>
                 <span className="block text-[10px] tracking-[0.2em] text-[#D49B44] uppercase">
                   Aktar & Kuruyemiş
@@ -30,14 +35,14 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-sm">
-              Bartın'da kök salan lezzet ve doğallık durağımızda; taze kavrum kuruyemişleri, 
+              {storeInfo.city}'da kök salan lezzet ve doğallık durağımızda; taze kavrum kuruyemişleri, 
               katkısız organik baharatları, asırlık şifalı çay harmanlarını ve soğuk pres yağları 
               en yüksek hijyen standartlarında sunuyoruz.
             </p>
 
             <div className="flex items-center gap-2 text-xs text-[#D49B44]">
               <ShieldCheck className="w-4 h-4" />
-              <span>Bartın Merkez'in 5.0 Google Yıldızlı Doğal Aktarı</span>
+              <span>{storeInfo.city} Merkez'in {storeInfo.googleRating} Google Yıldızlı Doğal Aktarı</span>
             </div>
           </div>
 
@@ -89,30 +94,39 @@ export const Footer: React.FC = () => {
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#D49B44] shrink-0 mt-0.5" />
                 <span>
-                  {STORE_INFO.address},<br />
-                  74100 {STORE_INFO.district} / {STORE_INFO.city}
+                  {storeInfo.address},<br />
+                  {storeInfo.district} / {storeInfo.city}
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#D49B44] shrink-0" />
-                <a href={`tel:${STORE_INFO.phone}`} className="hover:text-[#D49B44] font-semibold">
-                  {STORE_INFO.phoneDisplay}
+                <a href={`tel:${storeInfo.phone}`} className="hover:text-[#D49B44] font-semibold">
+                  {storeInfo.phoneDisplay}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-[#D49B44] shrink-0" />
-                <span>{STORE_INFO.workingHours}</span>
+                <span>{storeInfo.workingHours}</span>
               </li>
             </ul>
 
-            <div className="pt-2">
+            <div className="pt-2 flex items-center gap-3">
               <a
-                href={STORE_INFO.googleMapsUrl}
+                href={storeInfo.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs text-[#D49B44] font-semibold border border-white/15 transition-colors"
               >
                 Google Haritalar'da Aç →
+              </a>
+
+              <a
+                href="#admin"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-white/60 hover:text-white transition-colors"
+                title="Yönetici Girişi"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span>Yönetici</span>
               </a>
             </div>
           </div>
@@ -121,7 +135,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60">
-          <p>© {new Date().getFullYear()} HAS-TAT Aktar & Kuruyemiş. Tüm Hakları Saklıdır.</p>
+          <p>© {new Date().getFullYear()} {storeInfo.title}. Tüm Hakları Saklıdır.</p>
           
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">

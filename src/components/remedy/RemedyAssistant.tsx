@@ -12,20 +12,23 @@ import {
   Clock,
   Layers
 } from 'lucide-react';
-import { REMEDIES } from '../../data/remedies';
-import { PRODUCTS } from '../../data/products';
 import { useCart } from '../../context/CartContext';
+import { useSiteData } from '../../context/SiteDataContext';
 import { Remedy, Product } from '../../types';
 
 export const RemedyAssistant: React.FC = () => {
-  const [activeRemedyId, setActiveRemedyId] = useState<string>(REMEDIES[0].id);
+  const { data } = useSiteData();
+  const { remedies, products } = data;
+  const [activeRemedyId, setActiveRemedyId] = useState<string>(remedies[0]?.id || '');
   const { addToCart, setModalProduct, showToast } = useCart();
 
-  const activeRemedy: Remedy = REMEDIES.find(r => r.id === activeRemedyId) || REMEDIES[0];
+  const activeRemedy: Remedy = remedies.find(r => r.id === activeRemedyId) || remedies[0];
 
-  // Match recommended products from products database
+  if (!activeRemedy) return null;
+
+  // Match recommended products from dynamic products database
   const recommendedProducts: Product[] = activeRemedy.recommendedProductIds
-    .map(id => PRODUCTS.find(p => p.id === id))
+    .map(id => products.find(p => p.id === id))
     .filter(Boolean) as Product[];
 
   const getIcon = (name: string) => {
@@ -67,8 +70,8 @@ export const RemedyAssistant: React.FC = () => {
 
         {/* Remedy Selector Tabs */}
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
-          {REMEDIES.map((remedy) => {
-            const isSelected = remedy.id === activeRemedyId;
+          {remedies.map((remedy) => {
+            const isSelected = remedy.id === activeRemedy.id;
             return (
               <button
                 key={remedy.id}
@@ -145,13 +148,15 @@ export const RemedyAssistant: React.FC = () => {
               </div>
 
               {/* Add All to Cart Button */}
-              <button
-                onClick={handleAddAllToCart}
-                className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-2xl bg-[#D49B44] hover:bg-[#b67e2b] text-[#1B382B] font-bold text-sm shadow-md transition-all active:scale-98"
-              >
-                <Layers className="w-4 h-4" />
-                <span>Bu Reçetedeki Tüm Ürünleri Sepete Ekle</span>
-              </button>
+              {recommendedProducts.length > 0 && (
+                <button
+                  onClick={handleAddAllToCart}
+                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-2xl bg-[#D49B44] hover:bg-[#b67e2b] text-[#1B382B] font-bold text-sm shadow-md transition-all active:scale-98"
+                >
+                  <Layers className="w-4 h-4" />
+                  <span>Bu Reçetedeki Tüm Ürünleri Sepete Ekle</span>
+                </button>
+              )}
             </div>
 
             {/* Right: Recommended Products for this Remedy */}
@@ -164,70 +169,78 @@ export const RemedyAssistant: React.FC = () => {
                 <span className="text-xs text-[#1A1615]/60">Doğrudan sepete eklenebilir</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {recommendedProducts.map((prod) => {
-                  const defaultWeight = prod.weightOptions[0];
-                  return (
-                    <div
-                      key={prod.id}
-                      className="bg-[#FDFBF7] rounded-2xl p-4 border border-[#e8e2d5] hover:border-[#D49B44] hover:shadow-md transition-all flex flex-col justify-between group"
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <img
-                          src={prod.imageUrl}
-                          alt={prod.name}
-                          className="w-16 h-16 rounded-xl object-cover shrink-0 cursor-pointer group-hover:scale-105 transition-transform"
-                          onClick={() => setModalProduct(prod)}
-                        />
-                        <div>
-                          <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider">
-                            {prod.categoryLabel}
-                          </span>
-                          <h5
+              {recommendedProducts.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {recommendedProducts.map((prod) => {
+                    const defaultWeight = prod.weightOptions[0] || { weight: '1 Adet', price: prod.basePrice };
+                    return (
+                      <div
+                        key={prod.id}
+                        className="bg-[#FDFBF7] rounded-2xl p-4 border border-[#e8e2d5] hover:border-[#D49B44] hover:shadow-md transition-all flex flex-col justify-between group"
+                      >
+                        <div className="flex items-center gap-3 mb-3">
+                          <img
+                            src={prod.imageUrl}
+                            alt={prod.name}
+                            className="w-16 h-16 rounded-xl object-cover shrink-0 cursor-pointer group-hover:scale-105 transition-transform"
                             onClick={() => setModalProduct(prod)}
-                            className="text-sm font-bold text-[#1B382B] hover:text-[#D49B44] cursor-pointer line-clamp-1"
-                          >
-                            {prod.name}
-                          </h5>
-                          <span className="text-xs text-[#1A1615]/70 block mt-0.5">
-                            Menşei: {prod.origin}
-                          </span>
+                          />
+                          <div>
+                            <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider">
+                              {prod.categoryLabel}
+                            </span>
+                            <h5
+                              onClick={() => setModalProduct(prod)}
+                              className="text-sm font-bold text-[#1B382B] hover:text-[#D49B44] cursor-pointer line-clamp-1"
+                            >
+                              {prod.name}
+                            </h5>
+                            <span className="text-xs text-[#1A1615]/70 block mt-0.5">
+                              Menşei: {prod.origin}
+                            </span>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-[#1A1615]/70 line-clamp-2 mb-3">
+                          {prod.shortDesc}
+                        </p>
+
+                        <div className="pt-3 border-t border-[#eee7d9] flex items-center justify-between">
+                          <div>
+                            <span className="text-[11px] text-[#1A1615]/60 block">Başlangıç:</span>
+                            <span className="text-base font-extrabold text-[#1B382B]">
+                              ₺{defaultWeight.price}
+                            </span>
+                            <span className="text-[11px] text-gray-500 ml-1">({defaultWeight.weight})</span>
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => setModalProduct(prod)}
+                              className="px-2.5 py-1.5 rounded-lg border border-[#1B382B]/20 text-[#1B382B] text-xs font-semibold hover:bg-white transition-colors"
+                            >
+                              İncele
+                            </button>
+                            <button
+                              onClick={() => addToCart(prod, defaultWeight.weight, 1)}
+                              className="p-2 rounded-lg bg-[#1B382B] text-[#D49B44] hover:bg-[#142a20] transition-colors"
+                              title="Sepete Ekle"
+                            >
+                              <ShoppingBag className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
                       </div>
-
-                      <p className="text-xs text-[#1A1615]/70 line-clamp-2 mb-3">
-                        {prod.shortDesc}
-                      </p>
-
-                      <div className="pt-3 border-t border-[#eee7d9] flex items-center justify-between">
-                        <div>
-                          <span className="text-[11px] text-[#1A1615]/60 block">Başlangıç:</span>
-                          <span className="text-base font-extrabold text-[#1B382B]">
-                            ₺{defaultWeight.price}
-                          </span>
-                          <span className="text-[11px] text-gray-500 ml-1">({defaultWeight.weight})</span>
-                        </div>
-
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            onClick={() => setModalProduct(prod)}
-                            className="px-2.5 py-1.5 rounded-lg border border-[#1B382B]/20 text-[#1B382B] text-xs font-semibold hover:bg-white transition-colors"
-                          >
-                            İncele
-                          </button>
-                          <button
-                            onClick={() => addToCart(prod, defaultWeight.weight, 1)}
-                            className="p-2 rounded-lg bg-[#1B382B] text-[#D49B44] hover:bg-[#142a20] transition-colors"
-                            title="Sepete Ekle"
-                          >
-                            <ShoppingBag className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="p-8 text-center bg-[#FDFBF7] rounded-2xl border border-[#eee7d9]">
+                  <p className="text-xs text-gray-500">
+                    Bu kür için henüz önerilen ürün atanmadı veya ürünler güncellendi.
+                  </p>
+                </div>
+              )}
             </div>
 
           </div>

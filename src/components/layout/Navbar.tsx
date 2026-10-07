@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ShoppingBag, Search, Menu, X, Phone, ChevronDown, Sparkles, MapPin } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, Phone, ChevronDown, Sparkles, MapPin, ShieldCheck } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import { STORE_INFO } from '../../data/storeInfo';
+import { useSiteData } from '../../context/SiteDataContext';
 import { CategoryType } from '../../types';
 
 export const Navbar: React.FC = () => {
@@ -12,6 +12,9 @@ export const Navbar: React.FC = () => {
     searchQuery, 
     setSearchQuery 
   } = useCart();
+
+  const { data } = useSiteData();
+  const { storeInfo } = data;
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -63,14 +66,16 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
 
-          {/* Luxury Brand Logo (No wrapping) */}
+          {/* Luxury Brand Logo */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1B382B] flex items-center justify-center text-[#D49B44] shadow-md group-hover:bg-[#142a20] transition-colors shrink-0">
-              <span className="font-serif text-2xl font-bold italic">H</span>
+              <span className="font-serif text-2xl font-bold italic">
+                {storeInfo.name.charAt(0) || 'H'}
+              </span>
             </div>
             <div className="flex flex-col whitespace-nowrap">
               <span className="font-serif text-2xl sm:text-3xl font-extrabold tracking-wide text-[#1B382B] leading-none">
-                HAS-TAT
+                {storeInfo.name}
               </span>
               <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-[#D49B44] uppercase mt-0.5">
                 Aktar & Kuruyemiş
@@ -78,7 +83,7 @@ export const Navbar: React.FC = () => {
             </div>
           </a>
 
-          {/* Modern Desktop Navigation Links (Organized & Spacious) */}
+          {/* Modern Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             
             <a
@@ -110,7 +115,7 @@ export const Navbar: React.FC = () => {
                       onClick={() => handleCategorySelect('all')}
                       className="w-full text-left px-3 py-2 rounded-xl text-xs font-bold text-[#1B382B] hover:bg-[#F7F4EC] flex items-center justify-between"
                     >
-                      <span>✨ Tüm Ürünleri İncele</span>
+                      <span>✨ Tüm Ürünleri İncele ({data.products.length})</span>
                       <span className="text-[10px] text-[#D49B44] font-semibold">Tüm Liste →</span>
                     </button>
                   </div>
@@ -153,7 +158,17 @@ export const Navbar: React.FC = () => {
               className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-[#1A1615]/80 hover:text-[#1B382B] hover:bg-[#1B382B]/5 rounded-full transition-colors"
             >
               <MapPin className="w-3.5 h-3.5 text-[#D49B44]" />
-              <span>Bartın Mağazamız</span>
+              <span>{storeInfo.city} Mağazamız</span>
+            </a>
+
+            {/* Subtle Admin Link */}
+            <a
+              href="#admin"
+              className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:text-[#1B382B] hover:bg-gray-100 rounded-full transition-colors"
+              title="Yönetici Paneli"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#D49B44]" />
+              <span>Yönetim</span>
             </a>
 
           </nav>
@@ -193,16 +208,16 @@ export const Navbar: React.FC = () => {
               )}
             </div>
 
-            {/* Quick Call Button (Desktop - strictly NO LINE BREAK) */}
+            {/* Quick Call Button */}
             <a
-              href={`tel:${STORE_INFO.phone}`}
+              href={`tel:${storeInfo.phone}`}
               className="hidden md:flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-[#1B382B] bg-[#1B382B]/8 hover:bg-[#1B382B]/15 rounded-full transition-all whitespace-nowrap shrink-0"
             >
               <Phone className="w-3.5 h-3.5 text-[#D49B44] shrink-0" />
-              <span>{STORE_INFO.phoneDisplay}</span>
+              <span>{storeInfo.phoneDisplay}</span>
             </a>
 
-            {/* Cart Drawer Button with Dynamic Counter Badge */}
+            {/* Cart Drawer Button */}
             <button
               onClick={() => setIsCartOpen(true)}
               className="relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-[#1B382B] text-white hover:bg-[#142a20] shadow-md transition-all active:scale-95 shrink-0"
@@ -221,7 +236,7 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Navigation (Touch Friendly & Responsive) */}
+      {/* Mobile Drawer Navigation */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-[#FDFBF7] border-b border-[#e8e2d5] px-4 pt-4 pb-6 shadow-xl animate-in fade-in slide-in-from-top-2">
           <div className="space-y-1">
@@ -236,7 +251,7 @@ export const Navbar: React.FC = () => {
             {/* Category Submenu in Mobile */}
             <div className="py-2 px-3 bg-white rounded-2xl border border-[#eee7d9] my-2">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#D49B44] block mb-1.5">
-                Kategoriler
+                Kategoriler ({data.products.length} Ürün)
               </span>
               <div className="grid grid-cols-1 gap-1">
                 {productCategories.map((cat) => (
@@ -265,21 +280,29 @@ export const Navbar: React.FC = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="block px-3.5 py-2.5 rounded-xl text-sm font-bold text-[#1A1615] hover:bg-[#1B382B]/8"
             >
-              📍 Bartın Mağazamız & Konum
+              📍 {storeInfo.city} Mağazamız
+            </a>
+
+            <a
+              href="#admin"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#D49B44] bg-[#1B382B]/5 hover:bg-[#1B382B]/10"
+            >
+              🔐 Yönetici Girişi (Admin Paneli)
             </a>
           </div>
 
           <div className="mt-4 pt-4 border-t border-[#e8e2d5] flex flex-col gap-2.5">
             <a
-              href={`tel:${STORE_INFO.phone}`}
+              href={`tel:${storeInfo.phone}`}
               className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-[#1B382B] text-white font-bold text-xs shadow-md"
             >
               <Phone className="w-4 h-4 text-[#D49B44]" />
-              <span>{STORE_INFO.phoneDisplay} - Hemen Ara</span>
+              <span>{storeInfo.phoneDisplay} - Hemen Ara</span>
             </a>
 
             <div className="text-center text-[11px] text-[#1A1615]/70">
-              📍 {STORE_INFO.address}, Bartın Merkez
+              📍 {storeInfo.address}, {storeInfo.city}
             </div>
           </div>
         </div>

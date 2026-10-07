@@ -1,8 +1,11 @@
 import React from 'react';
 import { Sparkles, ArrowRight, ShieldCheck, Star, Award, Heart, CheckCircle2 } from 'lucide-react';
-import { STORE_INFO } from '../../data/storeInfo';
+import { useSiteData } from '../../context/SiteDataContext';
 
 export const HeroSection: React.FC = () => {
+  const { data } = useSiteData();
+  const { hero, storeInfo } = data;
+
   return (
     <section className="relative overflow-hidden bg-[#1B382B] text-[#FDFBF7] py-12 sm:py-20 lg:py-24">
       {/* Warm ambient background glows */}
@@ -23,19 +26,18 @@ export const HeroSection: React.FC = () => {
             {/* Top pill badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D49B44]/20 border border-[#D49B44]/35 text-[#D49B44] text-[11px] sm:text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">
               <Sparkles className="w-3.5 h-3.5 text-[#D49B44] shrink-0" />
-              <span>Bartın'ın Güvenilir Doğal Şifa & Gurme Lezzet Durağı</span>
+              <span>{hero.badgeText}</span>
             </div>
 
             {/* Main Editorial Serif Heading */}
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.12] sm:leading-[1.08] tracking-tight text-white">
-              Doğanın <span className="italic text-[#D49B44]">Saf Şifası</span>,<br />
-              En Taze <span className="underline decoration-[#D49B44]/60 decoration-wavy decoration-1">Kavrum</span> Lezzetler.
+              {hero.titleLine1}<br />
+              <span className="italic text-[#D49B44]">{hero.titleLine2}</span>
             </h1>
 
             {/* Subtitle / Philosophy */}
             <p className="text-sm sm:text-base lg:text-lg text-[#F4EFE6]/85 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              HAS-TAT; Bartın'da günlük fırınlanan sıcak kuruyemişleri, asırlık şifalı bitki kürlerini, 
-              katkısız taş değirmen baharatları ve ilk soğuk pres saf yağları güvenle sofranıza getirir.
+              {hero.subtitle}
             </p>
 
             {/* CTA Action Buttons */}
@@ -44,7 +46,7 @@ export const HeroSection: React.FC = () => {
                 href="#urunler"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#D49B44] text-[#1B382B] hover:bg-[#e0a84e] font-bold text-sm sm:text-base transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
               >
-                <span>Taze Ürünleri İncele</span>
+                <span>{hero.ctaPrimaryText}</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
 
@@ -52,7 +54,7 @@ export const HeroSection: React.FC = () => {
                 href="#sifa-rehberi"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-white font-medium text-sm sm:text-base backdrop-blur-sm transition-all duration-200"
               >
-                <span>🌿 Şifa Rehberini Başlat</span>
+                <span>{hero.ctaSecondaryText}</span>
               </a>
             </div>
 
@@ -64,8 +66,8 @@ export const HeroSection: React.FC = () => {
                     <Star key={i} className="w-4 h-4 fill-[#D49B44] text-[#D49B44]" />
                   ))}
                 </div>
-                <span className="font-bold text-white text-sm">5.0 / 5.0</span>
-                <span>(10 Google Yorumu)</span>
+                <span className="font-bold text-white text-sm">{storeInfo.googleRating}.0 / 5.0</span>
+                <span>({storeInfo.reviewCount} Google Yorumu)</span>
               </div>
               <span className="hidden sm:inline text-white/20">•</span>
               <div className="flex items-center gap-1.5 text-white/80">
@@ -76,7 +78,7 @@ export const HeroSection: React.FC = () => {
 
           </div>
 
-          {/* Right Featured Visual Display (Ultra Luxury Photography) */}
+          {/* Right Featured Visual Display (Configurable Hero Image) */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
               
@@ -84,9 +86,12 @@ export const HeroSection: React.FC = () => {
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-b from-white/10 to-white/5 p-2 backdrop-blur-md">
                 
                 <img
-                  src="/hero-showcase.jpg"
-                  alt="HAS-TAT Aktar ve Kuruyemiş Taze Çerezler ve Şifalı Bitkiler"
+                  src={hero.heroImageUrl}
+                  alt={`${storeInfo.name} Taze Çerezler ve Şifalı Bitkiler`}
                   className="w-full h-80 sm:h-96 object-cover rounded-2xl brightness-100 contrast-102"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/hero-showcase.jpg';
+                  }}
                 />
 
                 {/* Floating Top Pill */}
@@ -100,18 +105,15 @@ export const HeroSection: React.FC = () => {
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5 text-[#D49B44] text-[11px] font-bold">
                       <Award className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">Bartın Merkez Şubemiz</span>
+                      <span className="truncate">{storeInfo.city} Merkez Şubemiz</span>
                     </div>
                     <div className="text-white text-xs sm:text-sm font-bold truncate mt-0.5">
-                      Bülent Ecevit Bulvarı
-                    </div>
-                    <div className="text-white/70 text-[11px] truncate">
-                      15 Temmuz Şehitler Okulu Karşısı
+                      {storeInfo.address}
                     </div>
                   </div>
                   
                   <a
-                    href={STORE_INFO.googleMapsUrl}
+                    href={storeInfo.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="shrink-0 px-3.5 py-2 bg-[#D49B44] hover:bg-white text-[#1B382B] text-xs font-bold rounded-xl transition-colors shadow-sm whitespace-nowrap"
