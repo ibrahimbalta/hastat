@@ -10,11 +10,14 @@ import {
   ShoppingBag, 
   AlertCircle,
   Clock,
-  Layers
+  Layers,
+  Leaf
 } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { useCart } from '../../context/CartContext';
 import { useSiteData } from '../../context/SiteDataContext';
 import { Remedy, Product } from '../../types';
+import { TiltCard } from '../effects/TiltCard';
 
 export const RemedyAssistant: React.FC = () => {
   const { data } = useSiteData();
@@ -33,12 +36,12 @@ export const RemedyAssistant: React.FC = () => {
 
   const getIcon = (name: string) => {
     switch (name) {
-      case 'ShieldCheck': return <ShieldCheck className="w-5 h-5" />;
-      case 'HeartPulse': return <HeartPulse className="w-5 h-5" />;
-      case 'Zap': return <Zap className="w-5 h-5" />;
-      case 'MoonStar': return <MoonStar className="w-5 h-5" />;
-      case 'Wind': return <Wind className="w-5 h-5" />;
-      default: return <Sparkles className="w-5 h-5" />;
+      case 'ShieldCheck': return <ShieldCheck className="w-4 h-4" />;
+      case 'HeartPulse': return <HeartPulse className="w-4 h-4" />;
+      case 'Zap': return <Zap className="w-4 h-4" />;
+      case 'MoonStar': return <MoonStar className="w-4 h-4" />;
+      case 'Wind': return <Wind className="w-4 h-4" />;
+      default: return <Sparkles className="w-4 h-4" />;
     }
   };
 
@@ -46,40 +49,57 @@ export const RemedyAssistant: React.FC = () => {
     recommendedProducts.forEach(prod => {
       addToCart(prod, prod.weightOptions[0].weight, 1);
     });
+
+    // Celebration gold & emerald confetti burst
+    try {
+      confetti({
+        particleCount: 60,
+        spread: 70,
+        origin: { y: 0.65 },
+        colors: ['#D49B44', '#1B382B', '#F3C978', '#FAF7F2'],
+      });
+    } catch {
+      // Fallback if confetti context not available
+    }
+
     showToast(`"${activeRemedy.title}" reçetesindeki tüm ürünler sepete eklendi!`);
   };
 
   return (
-    <section id="sifa-rehberi" className="py-20 bg-[#F7F4EC] relative scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="sifa-rehberi" className="py-20 sm:py-24 bg-[#F7F4EC] relative scroll-mt-20 overflow-hidden">
+      {/* Background ambient watermarks */}
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#D49B44]/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#1B382B]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1B382B]/10 text-[#1B382B] text-xs font-semibold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[#D49B44]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1B382B]/10 text-[#1B382B] text-xs font-semibold uppercase tracking-wider mb-3 border border-[#1B382B]/15">
+            <Leaf className="w-3.5 h-3.5 text-[#D49B44]" />
             <span>Kişiselleştirilmiş Aktar Asistanı</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1B382B] leading-tight">
             Şifa & İhtiyaç Rehberi
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-[#1A1615]/75">
+          <p className="mt-3 text-sm sm:text-base text-[#1A1615]/75 leading-relaxed">
             Vücudunuzun neye ihtiyacı olduğunu seçin; aktarlık ilmimiz ve asırlık tecrübemizle 
             hazırladığımız doğru bitki, baharat ve yağ kürlerini anında keşfedin.
           </p>
         </div>
 
         {/* Remedy Selector Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
           {remedies.map((remedy) => {
             const isSelected = remedy.id === activeRemedy.id;
             return (
               <button
                 key={remedy.id}
                 onClick={() => setActiveRemedyId(remedy.id)}
-                className={`flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                className={`flex items-center gap-2.5 px-5 py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${
                   isSelected
-                    ? 'bg-[#1B382B] text-[#D49B44] shadow-md scale-105'
-                    : 'bg-white text-[#1A1615]/80 hover:bg-white/80 hover:text-[#1B382B] border border-[#e8e2d5]'
+                    ? 'bg-[#1B382B] text-[#D49B44] shadow-lg border border-[#D49B44]/40 scale-105'
+                    : 'bg-white text-[#1A1615]/80 hover:bg-white hover:text-[#1B382B] border border-[#e8e2d5] hover:border-[#D49B44]/40 shadow-xs'
                 }`}
               >
                 <span className={isSelected ? 'text-[#D49B44]' : 'text-[#1B382B]'}>
@@ -92,19 +112,20 @@ export const RemedyAssistant: React.FC = () => {
         </div>
 
         {/* Remedy Card Box */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-[#e8e2d5] shadow-xl">
+        <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-10 border border-[#e8e2d5] shadow-luxury">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
             {/* Left: Remedy Details & Herbal Recipe */}
             <div className="lg:col-span-5 space-y-6">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#D49B44]">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#D49B44] flex items-center gap-1.5">
+                  <Leaf className="w-3.5 h-3.5" />
                   Uzman Aktar Reçetesi
                 </span>
-                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#1B382B] mt-1">
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#1B382B] mt-1.5">
                   {activeRemedy.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#D49B44] font-medium mt-1">
+                <p className="text-xs sm:text-sm text-[#D49B44] font-medium mt-1 italic">
                   "{activeRemedy.tagline}"
                 </p>
                 <p className="text-sm text-[#1A1615]/80 mt-3 leading-relaxed">
@@ -129,7 +150,7 @@ export const RemedyAssistant: React.FC = () => {
               </div>
 
               {/* Preparation & Routine Box */}
-              <div className="bg-[#1B382B] text-white p-5 rounded-2xl space-y-3">
+              <div className="bg-[#1B382B] text-white p-5 rounded-2xl space-y-3 shadow-md border border-[#D49B44]/25">
                 <div className="flex items-center gap-2 text-[#D49B44] text-xs font-bold uppercase tracking-wider">
                   <Clock className="w-4 h-4" />
                   <span>Kullanım & Hazırlama Tavsiyesi</span>
@@ -151,7 +172,7 @@ export const RemedyAssistant: React.FC = () => {
               {recommendedProducts.length > 0 && (
                 <button
                   onClick={handleAddAllToCart}
-                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-2xl bg-[#D49B44] hover:bg-[#b67e2b] text-[#1B382B] font-bold text-sm shadow-md transition-all active:scale-98"
+                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-2xl bg-[#D49B44] hover:bg-[#b67e2b] text-[#1B382B] font-bold text-sm shadow-md transition-all active:scale-98 cursor-pointer shimmer-effect"
                 >
                   <Layers className="w-4 h-4" />
                   <span>Bu Reçetedeki Tüm Ürünleri Sepete Ekle</span>
@@ -174,63 +195,69 @@ export const RemedyAssistant: React.FC = () => {
                   {recommendedProducts.map((prod) => {
                     const defaultWeight = prod.weightOptions[0] || { weight: '1 Adet', price: prod.basePrice };
                     return (
-                      <div
+                      <TiltCard
                         key={prod.id}
-                        className="bg-[#FDFBF7] rounded-2xl p-4 border border-[#e8e2d5] hover:border-[#D49B44] hover:shadow-md transition-all flex flex-col justify-between group"
+                        maxTilt={4}
+                        glare={true}
+                        glareMaxOpacity={0.15}
+                        scale={1.01}
+                        className="rounded-2xl"
                       >
-                        <div className="flex items-center gap-3 mb-3">
-                          <img
-                            src={prod.imageUrl}
-                            alt={prod.name}
-                            className="w-16 h-16 rounded-xl object-cover shrink-0 cursor-pointer group-hover:scale-105 transition-transform"
-                            onClick={() => setModalProduct(prod)}
-                          />
-                          <div>
-                            <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider">
-                              {prod.categoryLabel}
-                            </span>
-                            <h5
+                        <div className="bg-[#FDFBF7] rounded-2xl p-4 border border-[#e8e2d5] hover:border-[#D49B44]/60 hover:shadow-md transition-all flex flex-col justify-between group h-full">
+                          <div className="flex items-center gap-3 mb-3">
+                            <img
+                              src={prod.imageUrl}
+                              alt={prod.name}
+                              className="w-16 h-16 rounded-xl object-cover shrink-0 cursor-pointer group-hover:scale-105 transition-transform border border-[#eee7d9]"
                               onClick={() => setModalProduct(prod)}
-                              className="text-sm font-bold text-[#1B382B] hover:text-[#D49B44] cursor-pointer line-clamp-1"
-                            >
-                              {prod.name}
-                            </h5>
-                            <span className="text-xs text-[#1A1615]/70 block mt-0.5">
-                              Menşei: {prod.origin}
-                            </span>
+                            />
+                            <div>
+                              <span className="text-[10px] font-bold text-[#D49B44] uppercase tracking-wider">
+                                {prod.categoryLabel}
+                              </span>
+                              <h5
+                                onClick={() => setModalProduct(prod)}
+                                className="text-sm font-bold text-[#1B382B] hover:text-[#D49B44] cursor-pointer line-clamp-1"
+                              >
+                                {prod.name}
+                              </h5>
+                              <span className="text-xs text-[#1A1615]/70 block mt-0.5">
+                                Menşei: {prod.origin}
+                              </span>
+                            </div>
+                          </div>
+
+                          <p className="text-xs text-[#1A1615]/70 line-clamp-2 mb-3">
+                            {prod.shortDesc}
+                          </p>
+
+                          <div className="pt-3 border-t border-[#eee7d9] flex items-center justify-between">
+                            <div>
+                              <span className="text-[11px] text-[#1A1615]/60 block">Başlangıç:</span>
+                              <span className="text-base font-extrabold text-[#1B382B]">
+                                ₺{defaultWeight.price}
+                              </span>
+                              <span className="text-[11px] text-gray-500 ml-1">({defaultWeight.weight})</span>
+                            </div>
+
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() => setModalProduct(prod)}
+                                className="px-2.5 py-1.5 rounded-lg border border-[#1B382B]/20 text-[#1B382B] text-xs font-semibold hover:bg-white transition-colors"
+                              >
+                                İncele
+                              </button>
+                              <button
+                                onClick={() => addToCart(prod, defaultWeight.weight, 1)}
+                                className="p-2 rounded-lg bg-[#1B382B] text-[#D49B44] hover:bg-[#142a20] transition-colors"
+                                title="Sepete Ekle"
+                              >
+                                <ShoppingBag className="w-4 h-4" />
+                              </button>
+                            </div>
                           </div>
                         </div>
-
-                        <p className="text-xs text-[#1A1615]/70 line-clamp-2 mb-3">
-                          {prod.shortDesc}
-                        </p>
-
-                        <div className="pt-3 border-t border-[#eee7d9] flex items-center justify-between">
-                          <div>
-                            <span className="text-[11px] text-[#1A1615]/60 block">Başlangıç:</span>
-                            <span className="text-base font-extrabold text-[#1B382B]">
-                              ₺{defaultWeight.price}
-                            </span>
-                            <span className="text-[11px] text-gray-500 ml-1">({defaultWeight.weight})</span>
-                          </div>
-
-                          <div className="flex items-center gap-1.5">
-                            <button
-                              onClick={() => setModalProduct(prod)}
-                              className="px-2.5 py-1.5 rounded-lg border border-[#1B382B]/20 text-[#1B382B] text-xs font-semibold hover:bg-white transition-colors"
-                            >
-                              İncele
-                            </button>
-                            <button
-                              onClick={() => addToCart(prod, defaultWeight.weight, 1)}
-                              className="p-2 rounded-lg bg-[#1B382B] text-[#D49B44] hover:bg-[#142a20] transition-colors"
-                              title="Sepete Ekle"
-                            >
-                              <ShoppingBag className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      </TiltCard>
                     );
                   })}
                 </div>
@@ -250,3 +277,5 @@ export const RemedyAssistant: React.FC = () => {
     </section>
   );
 };
+
+export default RemedyAssistant;
