@@ -1,6 +1,9 @@
 import React from 'react';
 import { Sparkles, ArrowRight, ShieldCheck, Star, Award, Heart, CheckCircle2 } from 'lucide-react';
 import { useSiteData } from '../../context/SiteDataContext';
+import { BotanicalCanvas } from '../effects/BotanicalCanvas';
+import { TiltCard } from '../effects/TiltCard';
+import { LiveRoastBadge } from './LiveRoastBadge';
 
 export const HeroSection: React.FC = () => {
   const { data } = useSiteData();
@@ -8,28 +11,38 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section className="relative overflow-hidden bg-[#1B382B] text-[#FDFBF7] py-12 sm:py-20 lg:py-24">
+      {/* 60 FPS Floating Gold Dust & Botanical Particles Canvas */}
+      <BotanicalCanvas
+        particleCount={46}
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-85 z-0"
+      />
+
       {/* Warm ambient background glows */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D49B44]/15 rounded-full blur-3xl pointer-events-none -mr-48 -mt-48" />
-      <div className="absolute bottom-0 left-0 w-[450px] h-[450px] bg-[#C86446]/10 rounded-full blur-3xl pointer-events-none -ml-36 -mb-36" />
+      <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-[#D49B44]/15 rounded-full blur-3xl pointer-events-none -mr-48 -mt-48" />
+      <div className="absolute bottom-0 left-0 w-[480px] h-[480px] bg-[#C86446]/10 rounded-full blur-3xl pointer-events-none -ml-36 -mb-36" />
 
       {/* Subtle oriental pattern overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#D49B44_1px,transparent_1px)] [background-size:24px_24px]"
+        className="absolute inset-0 opacity-[0.035] pointer-events-none bg-[radial-gradient(#D49B44_1px,transparent_1px)] [background-size:24px_24px] z-0"
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
           {/* Left Text & CTA Content */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-7 text-center lg:text-left">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-center lg:text-left">
             
-            {/* Top pill badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D49B44]/20 border border-[#D49B44]/35 text-[#D49B44] text-[11px] sm:text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">
-              <Sparkles className="w-3.5 h-3.5 text-[#D49B44] shrink-0" />
-              <span>{hero.badgeText}</span>
+            {/* Top Row: Live Roast Radar & Brand Badge */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
+              <LiveRoastBadge />
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D49B44]/20 border border-[#D49B44]/35 text-[#D49B44] text-[11px] sm:text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">
+                <Sparkles className="w-3.5 h-3.5 text-[#D49B44] shrink-0" />
+                <span>{hero.badgeText}</span>
+              </div>
             </div>
 
-            {/* Main Editorial Serif Heading */}
+            {/* Main Editorial Serif Heading with Luxury Gold Accent */}
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.12] sm:leading-[1.08] tracking-tight text-white">
               {hero.titleLine1}<br />
               <span className="italic text-[#D49B44]">{hero.titleLine2}</span>
@@ -41,10 +54,10 @@ export const HeroSection: React.FC = () => {
             </p>
 
             {/* CTA Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1 sm:pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
               <a
                 href="#urunler"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#D49B44] text-[#1B382B] hover:bg-[#e0a84e] font-bold text-sm sm:text-base transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#D49B44] hover:bg-[#e0a84e] text-[#1B382B] font-bold text-sm sm:text-base transition-all duration-200 shadow-lg hover:shadow-xl active:scale-95 shimmer-effect"
               >
                 <span>{hero.ctaPrimaryText}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -78,57 +91,65 @@ export const HeroSection: React.FC = () => {
 
           </div>
 
-          {/* Right Featured Visual Display (Configurable Hero Image) */}
+          {/* Right Featured Visual Display with 3D Tilt Wrapper */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
               
-              {/* Outer decorative card frame */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-b from-white/10 to-white/5 p-2 backdrop-blur-md">
-                
-                <img
-                  src={hero.heroImageUrl}
-                  alt={`${storeInfo.name} Taze Çerezler ve Şifalı Bitkiler`}
-                  className="w-full h-80 sm:h-96 object-cover rounded-2xl brightness-100 contrast-102"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = './hero-showcase.jpg';
-                  }}
-                />
-
-                {/* Floating Top Pill */}
-                <div className="absolute top-5 right-5 bg-black/60 backdrop-blur-md text-white text-xs px-3.5 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 shadow-md">
-                  <Heart className="w-3.5 h-3.5 text-red-400 fill-red-400" />
-                  <span className="font-medium">Günlük Taze Kavrum</span>
-                </div>
-
-                {/* Floating Bottom Verified Store Card */}
-                <div className="absolute bottom-4 left-4 right-4 p-3.5 sm:p-4 rounded-2xl bg-[#1B382B]/95 backdrop-blur-md border border-[#D49B44]/40 shadow-xl flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5 text-[#D49B44] text-[11px] font-bold">
-                      <Award className="w-3.5 h-3.5 shrink-0" />
-                      <span className="truncate">{storeInfo.city} Merkez Şubemiz</span>
-                    </div>
-                    <div className="text-white text-xs sm:text-sm font-bold truncate mt-0.5">
-                      {storeInfo.address}
-                    </div>
-                  </div>
+              <TiltCard
+                maxTilt={6}
+                glare={true}
+                glareMaxOpacity={0.25}
+                scale={1.02}
+                className="rounded-3xl"
+              >
+                {/* Outer decorative card frame */}
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-b from-white/10 to-white/5 p-2 backdrop-blur-md">
                   
-                  <a
-                    href={storeInfo.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 px-3.5 py-2 bg-[#D49B44] hover:bg-white text-[#1B382B] text-xs font-bold rounded-xl transition-colors shadow-sm whitespace-nowrap"
-                  >
-                    Yol Tarifi
-                  </a>
+                  <img
+                    src={hero.heroImageUrl}
+                    alt={`${storeInfo.name} Taze Çerezler ve Şifalı Bitkiler`}
+                    className="w-full h-80 sm:h-96 object-cover rounded-2xl brightness-100 contrast-102"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = './hero-showcase.jpg';
+                    }}
+                  />
+
+                  {/* Floating Top Pill */}
+                  <div className="absolute top-5 right-5 bg-black/60 backdrop-blur-md text-white text-xs px-3.5 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 shadow-md">
+                    <Heart className="w-3.5 h-3.5 text-red-400 fill-red-400" />
+                    <span className="font-medium">Günlük Taze Kavrum</span>
+                  </div>
+
+                  {/* Floating Bottom Verified Store Card */}
+                  <div className="absolute bottom-4 left-4 right-4 p-3.5 sm:p-4 rounded-2xl bg-[#1B382B]/95 backdrop-blur-md border border-[#D49B44]/40 shadow-xl flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 text-[#D49B44] text-[11px] font-bold">
+                        <Award className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">{storeInfo.city} Merkez Şubemiz</span>
+                      </div>
+                      <div className="text-white text-xs sm:text-sm font-bold truncate mt-0.5">
+                        {storeInfo.address}
+                      </div>
+                    </div>
+                    
+                    <a
+                      href={storeInfo.googleMapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 px-3.5 py-2 bg-[#D49B44] hover:bg-white text-[#1B382B] text-xs font-bold rounded-xl transition-colors shadow-sm whitespace-nowrap"
+                    >
+                      Yol Tarifi
+                    </a>
+                  </div>
+
                 </div>
 
-              </div>
-
-              {/* Decorative side badge */}
-              <div className="hidden sm:flex absolute -top-4 -left-4 px-3.5 py-2 bg-white text-[#1B382B] rounded-2xl shadow-xl border border-[#eee7d9] items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span className="text-xs font-bold">%100 Doğal & Taze</span>
-              </div>
+                {/* Decorative side badge */}
+                <div className="hidden sm:flex absolute -top-4 -left-4 px-3.5 py-2 bg-white text-[#1B382B] rounded-2xl shadow-xl border border-[#eee7d9] items-center gap-2 z-20">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span className="text-xs font-bold">%100 Doğal & Taze</span>
+                </div>
+              </TiltCard>
 
             </div>
           </div>
@@ -138,3 +159,5 @@ export const HeroSection: React.FC = () => {
     </section>
   );
 };
+
+export default HeroSection;
