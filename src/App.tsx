@@ -13,6 +13,7 @@ import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 import { Toast } from './components/common/Toast';
 import { AdminPanel } from './components/admin/AdminPanel';
 import { useAdminAuth } from './hooks/useAdminAuth';
+import { MouseSpotlightGlow } from './components/effects/MouseSpotlightGlow';
 
 export const App: React.FC = () => {
   const { isAdminRoute } = useAdminAuth();
@@ -23,7 +24,10 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FDFBF7] text-[#1A1615] font-sans antialiased selection:bg-[#D49B44] selection:text-[#1B382B]">
+    <div className="min-h-screen flex flex-col bg-[#FDFBF7] text-[#1A1615] font-sans antialiased selection:bg-[#D49B44] selection:text-[#1B382B] relative">
+      {/* Luxury Ambient Mouse Spotlight Glow */}
+      <MouseSpotlightGlow />
+
       {/* Top Delivery & Contact Announcement Bar */}
       <TopBanner />
 
