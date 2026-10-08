@@ -41,8 +41,20 @@ export const Footer: React.FC = () => {
             </p>
 
             <div className="flex items-center gap-2 text-xs text-[#D49B44]">
-              <ShieldCheck className="w-4 h-4" />
+              <ShieldCheck className="w-4 h-4 shrink-0" />
               <span>{storeInfo.city} Merkez'in {storeInfo.googleRating} Google Yıldızlı Doğal Aktarı</span>
+            </div>
+
+            {/* Atelier Luxury Seal */}
+            <div className="pt-2 flex items-center gap-3 border-t border-white/10">
+              <div className="w-11 h-11 rounded-full border border-[#D49B44]/50 bg-[#1B382B] flex flex-col items-center justify-center text-center shadow-md shrink-0">
+                <span className="text-[7px] text-[#D49B44] font-black tracking-widest uppercase">HAS-TAT</span>
+                <span className="text-[6px] text-white/70">1998</span>
+              </div>
+              <div className="text-[11px] text-white/65 leading-tight">
+                <span className="text-[#D49B44] font-semibold block">Geleneksel & Güvenilir</span>
+                Bartın Tarihi Doğal Şifa ve Gurme Mirası
+              </div>
             </div>
           </div>
 

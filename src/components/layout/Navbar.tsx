@@ -51,7 +51,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FDFBF7]/95 backdrop-blur-md border-b border-[#e8e2d5] shadow-xs">
+    <header className="sticky top-0 z-40 bg-[#FDFBF7]/95 backdrop-blur-md border-b border-[#e8e2d5] shadow-xs transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-3 sm:gap-6">
           
@@ -68,7 +68,7 @@ export const Navbar: React.FC = () => {
 
           {/* Luxury Brand Logo */}
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 shrink-0 group">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1B382B] flex items-center justify-center text-[#D49B44] shadow-md group-hover:bg-[#142a20] transition-colors shrink-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1B382B] border border-[#D49B44]/40 group-hover:border-[#D49B44] flex items-center justify-center text-[#D49B44] shadow-md group-hover:bg-[#142a20] transition-all shrink-0">
               <span className="font-serif text-2xl font-bold italic">
                 {storeInfo.name.charAt(0) || 'H'}
               </span>
@@ -220,13 +220,13 @@ export const Navbar: React.FC = () => {
             {/* Cart Drawer Button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-[#1B382B] text-white hover:bg-[#142a20] shadow-md transition-all active:scale-95 shrink-0"
+              className="relative flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-[#1B382B] text-white hover:bg-[#142a20] shadow-md border border-[#D49B44]/30 hover:border-[#D49B44]/60 transition-all active:scale-95 shrink-0 cursor-pointer"
               aria-label="Sepeti Görüntüle"
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-[#D49B44] shrink-0" />
               <span className="hidden sm:inline text-xs font-bold tracking-wide">Sepetim</span>
               {totalItems > 0 && (
-                <span className="w-5 h-5 rounded-full bg-[#D49B44] text-[#1B382B] text-[11px] font-black flex items-center justify-center shadow-sm">
+                <span className="w-5 h-5 rounded-full bg-[#D49B44] text-[#1B382B] text-[11px] font-black flex items-center justify-center shadow-sm animate-gold-pulse">
                   {totalItems}
                 </span>
               )}
